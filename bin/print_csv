@@ -1,0 +1,6 @@
+#!/usr/bin/Rscript
+p <- pipe("cat /dev/stdin")
+open(p)
+df <- read.csv(p)
+close(p)
+print(df)
