@@ -1,0 +1,29 @@
+#!/usr/bin/env awk -f
+
+{
+  for ( i = 1; i <= NF; i++ ) { 
+    split($i,kv,"=");
+    key = kv[1]; value = kv[2];
+    if ( keys[key] < 1 ) {
+      count += 1;
+      keys[key] = count;
+      if ( header ) { 
+        header = header","key
+      } else {
+        header = key
+      } 
+    }
+    if ( value == "" ) { value = "true" }
+    output[keys[key]] = value;
+  }
+  
+  if ( NR == 1 ) {
+    print header
+  }
+  
+  for ( i = 1; i < count; i++ ) {
+    printf("%s,",output[i]);
+  }
+  print(output[count])
+  delete output 
+}
