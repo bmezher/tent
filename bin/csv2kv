@@ -1,0 +1,15 @@
+#!/usr/bin/env awk -F, -f
+NR == 1 {
+  for ( i = 1; i <= NF; i++ ) { 
+    keys[i] = $i
+  }
+}
+
+NR > 1 {
+  for ( i = 1; i <= NF; i++ ) { 
+    if ( $i != "" ) {
+      printf("%s=%s ", keys[i], $i)
+    }
+  }
+  print ""
+}
