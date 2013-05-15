@@ -1,0 +1,11 @@
+#!/usr/bin/env awk -f
+# same as sort | uniq -c, sans sorting
+{
+  cnt[$0] += 1
+}
+
+END {
+  for (c in cnt) {
+    print c" "cnt[c]
+  }
+}
