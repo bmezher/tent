@@ -28,7 +28,7 @@ set autoindent
 # set backwards
 
 ## Use bold text instead of reverse video text.
-set boldtext
+# set boldtext
 
 ## The characters treated as closing brackets when justifying
 ## paragraphs.  They cannot contain blank characters.  Only closing
