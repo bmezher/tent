@@ -1,0 +1,7 @@
+#!/usr/bin/Rscript
+p <- pipe("cat /dev/stdin")
+open(p)
+df <- read.table(p,sep=" ")
+df$perc <- sprintf("%.2f%%",round(100*df[,ncol(df)] / sum(df[,ncol(df)]),2))
+close(p)
+print(df,row.names=F,names=F)
