@@ -45,7 +45,13 @@ export HISTSIZE=100000
 # Don't put duplicate lines in the history
 export HISTCONTROL=ignoredups
 
+
 export EDITOR=nano
 
 export BORIS_TENT=~/.tent/
 export PATH=$BORIS_TENT/bin:$PATH
+
+# improve less (if not already)
+if [[ -z "$LESSOPEN" ]] ; then
+  export LESSOPEN="|$BORIS_TENT/bin/lesspipe.sh %s"
+fi
