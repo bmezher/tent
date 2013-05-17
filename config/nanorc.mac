@@ -254,6 +254,28 @@ color brightmagenta "\%(\.[0-9]+)?[a-zA-Z]+"
 color brightgreen start=""""[^"]*" end=""""" start="'''[^']*" end="'''"
 color brightred "#.*$"
 
+## Pig
+syntax "Pig" "\.pig$"
+# operator
+icolor brightcyan "[[:<:]](all|and|as|asc|by|cube|cogroup|concat|cross|debug|default_parallel|define|dense|desc|describe|distinct|dump|explain|filter|flatten|foreach|generate|group|if|illustrate|inner|into|is|job.name|join|left|limit|load|mapreduce|matches|not|null|or|order|outer|parallel|rank|register|sample|set|split|store|stream|stream.skippath|through|union|using)[[:>:]]"
+# types
+color magenta "[[:<:]](bag|bytearray|boolean|chararray|datetime|double|float|int|long|map|tuple)[[:>:]]"
+# numeric constant
+color brightmagenta "[[:<:]]((([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|F|f)?[[:>:]]"
+# keyword control -?
+color brightcyan "^(%declare|%default)\s"
+# captures - ?
+color brightblue "[[:<:]]([a-zA-Z0-9_\.]*)\(" 
+# punctuation
+color white "(\(|\)|,|;|:)"
+# strings
+color brightgreen "['][^']*[^\\][']" 
+# variables
+color white "(\$)[a-zA-Z]([a-zA-Z0-9_]*)"
+# comment-line
+color brightred "--.*$"
+color brightred start="/\*" end="\*/"
+
 ## Ruby
 include "/usr/local/share/nano/ruby.nanorc"
 
