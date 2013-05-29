@@ -254,6 +254,32 @@ color brightmagenta "\%(\.[0-9]+)?[a-zA-Z]+"
 color brightgreen start=""""[^"]*" end=""""" start="'''[^']*" end="'''"
 color brightred "#.*$"
 
+## R
+syntax "R" "\.[R|r]$"
+# operator
+# icolor brightcyan "[[:<:]](all|and|as|asc|by|cube|cogroup|concat|cross|debug|default_parallel|define|dense|desc|describe|distinct|dump|explain|filter|flatten|foreach|generate|group|if|illustrate|inner|into|is|job.name|join|left|limit|load|mapreduce|matches|not|null|or|order|outer|parallel|rank|register|sample|set|split|store|stream|stream.skippath|through|union|using)[[:>:]]"
+# types
+color magenta "[[:<:]](bag|bytearray|boolean|chararray|datetime|double|float|int|long|map|tuple)[[:>:]]"
+# numeric constant
+color brightmagenta "[[:<:]]((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(i|L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?[[:>:]]"
+# language constant
+color brightred "[[:<:]](T|F|TRUE|FALSE|NULL|NA|Inf|NaN)[[:>:]]"
+# keyword control -?
+color brightcyan "[[:<:]](function|if|break|next|repeat|else|for|return|switch|while|in|invisible)[[:>:]]"
+# captures - ?
+# color brightblue "[[:<:]]([a-zA-Z0-9_\.]*)\(" 
+# storage
+# \b(logical|numeric|character|complex|matrix|array|data\.frame|list|factor)(?=\s*\()
+# punctuation
+color white "(\(|\)|,|;|:)"
+# strings
+color brightgreen "['][^']*[^\\][']" 
+color brightgreen "[\"][^\"]*[^\\][\"]" 
+# variables
+color white "(\$)[a-zA-Z]([a-zA-Z0-9_]*)"
+# comment-line
+color brightred "#.*$"
+
 ## Pig
 syntax "Pig" "\.pig$"
 # operator
