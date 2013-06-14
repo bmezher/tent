@@ -255,7 +255,7 @@ color brightgreen start=""""[^"]*" end=""""" start="'''[^']*" end="'''"
 color brightred "#.*$"
 
 ## R
-syntax "R" "\.[R|r]$"
+syntax "R" "\.[R|r](history)*$"
 # operator
 # icolor brightcyan "[[:<:]](all|and|as|asc|by|cube|cogroup|concat|cross|debug|default_parallel|define|dense|desc|describe|distinct|dump|explain|filter|flatten|foreach|generate|group|if|illustrate|inner|into|is|job.name|join|left|limit|load|mapreduce|matches|not|null|or|order|outer|parallel|rank|register|sample|set|split|store|stream|stream.skippath|through|union|using)[[:>:]]"
 # types
