@@ -1,0 +1,6 @@
+#!/usr/bin/Rscript
+p <- pipe("cat /dev/stdin")
+open(p)
+df <- read.table(p,header=T,sep='\t')
+close(p)
+print(df)
