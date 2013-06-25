@@ -1,0 +1,28 @@
+#!/usr/bin/env gawk -F '#' -f
+function output_user_data(user,conv,userdata) {
+  printf "%d", conv
+  j = 0; for (i in userdata) { srtd[j++] = (i+0) }
+  n = asort(srtd)
+  for (i=1; i <= n; i++) { d = srtd[i]; printf(" %s:%d", d, userdata[d]) }
+  print "#"user
+  delete srtd
+}
+
+{ 
+  if (NR == FNR) {
+    userinfo[$2] = $1
+  } else {
+    old = userinfo[$2]
+    split("",x)
+    o = split(old,oldinfo," ")
+    n = split($1,newinfo," ")
+    for (i = 2; i <= o; i += 1) {split(oldinfo[i],t,":"); x[t[1]] = t[2]}
+    for (i = 2; i <= n; i += 1) {split(newinfo[i],t,":"); x[t[1]] = t[2]}
+    output_user_data($2,newinfo[1],x)
+    delete userinfo[$2]
+  }
+}
+      
+END {
+  for (u in userinfo) { print userinfo[u]"#"u }
+}

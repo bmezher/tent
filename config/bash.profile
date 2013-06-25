@@ -49,6 +49,7 @@ export HISTCONTROL=ignoredups
 export EDITOR=nano
 
 export BORIS_TENT=~/.tent/
+export BIN=~/.tent/bin
 export PATH=$BORIS_TENT/bin:$PATH
 
 # improve less (if not already)

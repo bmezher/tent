@@ -1,0 +1,35 @@
+#!/bin/bash
+
+features=$1
+data=${2:-/dev/stdin}
+
+awk -v features=$features '
+BEGIN {
+  while ( getline < features ) {
+    if (NF == 1) {
+      f[$1] = 1
+    } else {
+      if ( $6 == "0.00%" ) {
+        k = substr($1,2)
+        f[k] = 1
+      }
+    }
+  }
+}
+
+{
+  output = $1
+  cnt = 1
+  for (i =2; i < NF; i+=1) {
+    split($i,a,":")
+    if (f[a[1]] != 1) {
+      output = output" "$i
+      cnt = cnt + 1
+    }
+  }
+  if ($2 == "|") { cnt = cnt - 1 }
+  if (cnt > 1) {
+    print output
+  }
+}
+' $data
