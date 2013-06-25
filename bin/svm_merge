@@ -1,4 +1,8 @@
-#!/usr/bin/env gawk -F '#' -f
+#!/usr/bin/env gawk -f
+BEGIN {
+  FS="#"
+}
+
 function output_user_data(user,conv,userdata) {
   printf "%d", conv
   j = 0; for (i in userdata) { srtd[j++] = (i+0) }
@@ -18,7 +22,7 @@ function output_user_data(user,conv,userdata) {
     n = split($1,newinfo," ")
     for (i = 2; i <= o; i += 1) {split(oldinfo[i],t,":"); x[t[1]] = t[2]}
     for (i = 2; i <= n; i += 1) {split(newinfo[i],t,":"); x[t[1]] = t[2]}
-    output_user_data($2,newinfo[1],x)
+    output_user_data($2,(newinfo[1] == 1 || oldinfo[1] == 1 ? 1 : -1),x)
     delete userinfo[$2]
   }
 }
