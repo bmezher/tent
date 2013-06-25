@@ -1,0 +1,16 @@
+#!/usr/bin/env awk -f
+# sample k lines from a file uniformly at random
+# from here: http://seqanswers.com/forums/archive/index.php/t-16845.html
+BEGIN {
+  if ( ! k ) { k = 1 }
+}
+
+{ 
+  y=x++<k?x-1:int(rand()*x);
+  if(y<k) { a[y] = $0 }
+}
+
+END {
+  for(z in a) {print a[z]}
+}
+
