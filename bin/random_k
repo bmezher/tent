@@ -3,6 +3,7 @@
 # from here: http://seqanswers.com/forums/archive/index.php/t-16845.html
 BEGIN {
   if ( ! k ) { k = 1 }
+  srand()
 }
 
 { 
