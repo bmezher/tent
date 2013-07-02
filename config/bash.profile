@@ -46,7 +46,8 @@ export HISTSIZE=100000
 export HISTCONTROL=ignoredups
 
 
-export EDITOR=nano
+export EDITOR=vim
+export VIM_APP_DIR=/Applications
 
 export BORIS_TENT=~/.tent/
 export BIN=~/.tent/bin
