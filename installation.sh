@@ -11,4 +11,4 @@
 ##     4b. Install Vim configuration   ######## sh <(curl https://j.mp/spf13-vim3 -L)
 #          git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 #          ln -s ~/.tent/config/vim.vimrc ~/.vimrc
-
+#          vim +BundleInstall +qall
