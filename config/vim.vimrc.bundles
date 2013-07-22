@@ -62,7 +62,7 @@
     " List only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
     "    let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming', 'php', 'ruby', 'python', 'go', 'twig', 'javascript', 'haskell', 'html', 'misc', 'scala']
-        let g:spf13_bundle_groups=['programming']
+        let g:spf13_bundle_groups=['programming','R']
     endif
 
     " To override all the included bundles, put
@@ -208,7 +208,13 @@
         if count(g:spf13_bundle_groups, 'twig')
             Bundle 'beyondwords/vim-twig'
         endif
-    endif
+
+    " R
+        if count(g:spf13_bundle_groups, 'R')
+            Bundle 'Vim-R-plugin'
+        endif
+
+     endif
 " }
 
 " General {

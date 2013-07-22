@@ -346,7 +346,7 @@
     " SnipMate {
         " Setting the author var
         " If forking, please overwrite in your .vimrc.local file
-        let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
+        let g:snips_author = 'Boris Mezhericher <mboris@gmail.com>'
     " }
 
     " NerdTree {

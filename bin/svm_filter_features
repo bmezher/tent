@@ -1,35 +1,54 @@
 #!/bin/bash
 
+invert=0
+renumber=0
+drop_empty=1
+while getopts "irk" opt; do
+   case $opt in
+      k)
+         drop_empty=0
+         ;;
+      r)
+         renumber=1
+         ;;
+      i)
+         invert=1
+         ;;
+      \?)
+         echo "Invalid option: -$OPTARG" >&2
+         ;;
+   esac
+done
+shift $((OPTIND-1))
+
 features=$1
 data=${2:-/dev/stdin}
 
-awk -v features=$features '
+awk -v features=$features -v invert=$invert -v renumber=$renumber -v drop_empty=$drop_empty '
 BEGIN {
+  i = 0
   while ( getline < features ) {
-    if (NF == 1) {
-      f[$1] = 1
-    } else {
-      if ( $6 == "0.00%" ) {
-        k = substr($1,2)
-        f[k] = 1
-      }
-    }
+     if (NF == 1) {
+        i += 1
+        f[$1] = (invert == 1 ? i : 1)
+     }
   }
 }
 
 {
-  output = $1
+   sub(/#.+/,"",$0)
+   output = $1
   cnt = 1
   for (i =2; i < NF; i+=1) {
     split($i,a,":")
-    if (f[a[1]] != 1) {
-      output = output" "$i
+    if ( (invert == 1 ? f[a[1]] >= 1 : f[a[1]] != 1) ) {
+       output = output" "(renumber == 1 ? f[a[1]] : a[1])""(length(a) > 1 ? ":"a[2] : "")
       cnt = cnt + 1
     }
   }
   if ($2 == "|") { cnt = cnt - 1 }
-  if (cnt > 1) {
-    print output
+  if (cnt > drop_empty) {
+     print output""(cnt == 1 ? " " : "")
   }
 }
 ' $data
