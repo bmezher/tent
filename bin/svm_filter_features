@@ -28,7 +28,7 @@ awk -v features=$features -v invert=$invert -v renumber=$renumber -v drop_empty=
 BEGIN {
   i = 0
   while ( getline < features ) {
-     if (NF == 1) {
+     if (NF >= 1) {
         i += 1
         f[$1] = (invert == 1 ? i : 1)
      }
@@ -36,8 +36,10 @@ BEGIN {
 }
 
 {
-   sub(/#.+/,"",$0)
-   output = $1
+  ci = index($0,"#")
+  comment = (ci > 0 ? substr($0,ci) : "")
+  sub(/#.+/,"",$0)
+  output = $1
   cnt = 1
   for (i =2; i < NF; i+=1) {
     split($i,a,":")
@@ -48,7 +50,7 @@ BEGIN {
   }
   if ($2 == "|") { cnt = cnt - 1 }
   if (cnt > drop_empty) {
-     print output""(cnt == 1 ? " " : "")
+     print output""(cnt == 1 ? " " : "")""comment
   }
 }
 ' $data
