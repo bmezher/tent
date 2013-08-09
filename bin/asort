@@ -1,0 +1,33 @@
+#!/bin/bash
+# sort a file by absolute value
+
+reverse=""
+key=1
+separator=""
+
+while getopts ":k:t:r" opt; do
+   case $opt in
+      k)
+         key=$OPTARG
+         ;;
+      r)
+         reverse="-r"
+         ;;
+      t)
+         separator="-F '$OPTARG'"
+         ;;
+      \?)
+         echo "Invalid option: -$OPTARG" >&2
+         exit 1
+         ;;
+      :)
+         echo "Option -$OPTARG requires an argument." >&2
+         exit 1
+         ;;
+   esac
+done
+shift $((OPTIND-1))
+
+awk $separator -v column=$key '{print ($column < 0 ? -$column : $column)"|"$0 }' $* \
+  | sort -n -t '|' -k 1 $reverse \
+  | cut -d '|' -f 2-

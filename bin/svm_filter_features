@@ -1,7 +1,7 @@
 #!/bin/bash
 
 invert=0
-renumber=0
+remap=0
 drop_empty=1
 while getopts "irk" opt; do
    case $opt in
@@ -9,7 +9,7 @@ while getopts "irk" opt; do
          drop_empty=0
          ;;
       r)
-         renumber=1
+         remap=1
          ;;
       i)
          invert=1
@@ -24,33 +24,60 @@ shift $((OPTIND-1))
 features=$1
 data=${2:-/dev/stdin}
 
-awk -v features=$features -v invert=$invert -v renumber=$renumber -v drop_empty=$drop_empty '
+gawk -v features=$features -v invert=$invert -v remap=$remap -v drop_empty=$drop_empty '
+function output_user_data(user,label,userdata) {
+  printf "%d", label
+  j = 0; for (i in userdata) { srtd[j++] = (i+0) }
+  n = asort(srtd)
+  for (i=1; i <= n; i++) { d = srtd[i]; printf(" %s:%s",d,userdata[d]) }
+  print "#"user
+  delete srtd
+}
+
+
 BEGIN {
-  i = 0
+  newvalue = 0
   while ( getline < features ) {
      if (NF >= 1) {
-        i += 1
-        f[$1] = (invert == 1 ? i : 1)
+        if (NF > 1) {
+          newvalue = $2
+          for (i = 3; i <= NF; i++) {
+            newvalue = newvalue";"$i
+          }
+        } else {
+          newvalue += 1
+        }
+        f[$1] = (remap == 1 ? newvalue : 1)
      }
   }
 }
 
 {
   ci = index($0,"#")
-  comment = (ci > 0 ? substr($0,ci) : "")
+  comment = (ci > 0 ? substr($0,ci+1) : "")
   sub(/#.+/,"",$0)
-  output = $1
+  label = $1
   cnt = 1
-  for (i =2; i < NF; i+=1) {
+  for (i =2; i <= NF; i+=1) {
     split($i,a,":")
-    if ( (invert == 1 ? f[a[1]] >= 1 : f[a[1]] != 1) ) {
-       output = output" "(renumber == 1 ? f[a[1]] : a[1])""(length(a) > 1 ? ":"a[2] : "")
+    if ( (invert == 1 ? f[a[1]] != "" : ( remap == 1 ? 1 : f[a[1]] == "") ) ) {
+      #print "mapping "$i" to "f[a[1]]
+      weight=(length(a) > 1 ? a[2] : 1)
+      if (remap == 1 && f[a[1]] != "") {
+        split(f[a[1]],b,";")
+        for (j = 1; j <= length(b); j++) {
+          data[b[j]] = weight
+        }
+      } else {
+        data[a[1]] = weight
+      }
       cnt = cnt + 1
     }
   }
   if ($2 == "|") { cnt = cnt - 1 }
   if (cnt > drop_empty) {
-     print output""(cnt == 1 ? " " : "")""comment
+    output_user_data(comment,label,data)
   }
+  delete data
 }
 ' $data
