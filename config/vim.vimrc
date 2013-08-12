@@ -165,7 +165,7 @@
     set tabstop=2                   " An indentation every four columns
     set softtabstop=2               " Let backspace delete indent
     "set matchpairs+=<:>             " Match, to be used with %
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    set pastetoggle=<F10>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
