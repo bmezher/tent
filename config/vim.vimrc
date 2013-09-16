@@ -582,6 +582,10 @@
         let g:indent_guides_enable_on_vim_startup = 1
     " }
 
+    " R {
+        let g:vimrplugin_assign = 0
+    " }
+
 " }
 
 " GUI Settings {
