@@ -154,20 +154,27 @@
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
+    " indent folding with manual folds
+    set foldmethod=indent
+    "augroup vimrc
+    "  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+    "augroup END
+
 " }
 
 " Formatting {
 
     set nowrap                      " Wrap long lines
     set autoindent                  " Indent at the same level of the previous line
-    set shiftwidth=2                " Use indents of 2 spaces
+    set shiftwidth=4                " Use indents of 4 spaces
     set expandtab                   " Tabs are spaces, not tabs
-    set tabstop=2                   " An indentation every four columns
-    set softtabstop=2               " Let backspace delete indent
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=4               " Let backspace delete indent
     "set matchpairs+=<:>             " Match, to be used with %
     set pastetoggle=<F10>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
+    autocmd FileType c,cpp set tabstop=2|set shiftwidth=2|set softtabstop=2
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
