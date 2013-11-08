@@ -153,12 +153,8 @@
     set foldenable                  " Auto fold code
     set list
     set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-
-    " indent folding with manual folds
     set foldmethod=indent
-    "augroup vimrc
-    "  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-    "augroup END
+    set foldlevel =9
 
 " }
 
@@ -259,6 +255,7 @@
     nmap <leader>f7 :set foldlevel=7<CR>
     nmap <leader>f8 :set foldlevel=8<CR>
     nmap <leader>f9 :set foldlevel=9<CR>
+    nmap <leader>fmm :set foldmethod=manual<CR>
 
     " Toggle search highlighting
     nmap <silent> <leader>/ :set invhlsearch<CR>
