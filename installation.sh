@@ -3,11 +3,15 @@
 
 ## 1. Set up the tent directory and checkout code from github
 ## 2. Link ~/.profile to $TENT/config/bash.profile, or source it directly
-## 3. Install homebrew and helper programms
+## 3. (Mac) Set Terminal theme to this one: open $TENT/config/boris.terminal
+## 4. (Mac) Install homebrew and helper programs
 #      ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+#      brew doctor
+#      brew install git
+#      brew install ctags
 #      brew install ack
-## 4. Set up Vim:
-##     4a. Install MacVim
+## 5. Set up Vim:
+##     4a. (Mac) Install MacVim
 ##     4b. Install Vim configuration   ######## sh <(curl https://j.mp/spf13-vim3 -L)
 #          git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 #          ln -s ~/.tent/config/vim.vimrc ~/.vimrc
