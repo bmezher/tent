@@ -464,7 +464,7 @@
         nnoremap <silent> <leader>gg :GitGutterToggle<CR>
     "}
 
-    " neocomplcache {
+    " nzaeocomplcache {
         if count(g:spf13_bundle_groups, 'neocomplcache')
             let g:acp_enableAtStartup = 0
             let g:neocomplcache_enable_at_startup = 1
@@ -588,6 +588,12 @@
 
     " R {
         let g:vimrplugin_assign = 0
+    " }
+
+    " YouCompleteMe {
+        if count(g:spf13_bundle_groups, 'YouCompleteMe')
+            let g:ycm_global_ycm_extra_conf = '$BORIS_TENT/config/ycm_default_conf.py'
+        endif
     " }
 
 " }

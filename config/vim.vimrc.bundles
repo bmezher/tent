@@ -62,7 +62,7 @@
     " List only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
     "    let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming', 'php', 'ruby', 'python', 'go', 'twig', 'javascript', 'haskell', 'html', 'misc', 'scala']
-        let g:spf13_bundle_groups=['boris','programming','R','pig']
+        let g:spf13_bundle_groups=['boris','YouCompleteMe','programming','R','pig']
     endif
 
     " To override all the included bundles, put
@@ -73,6 +73,7 @@
     " Boris bundles
         if count(g:spf13_bundle_groups, 'boris')
             Bundle 'altercation/vim-colors-solarized'
+            Bundle 'Headlights'
         endif
 
     " General
@@ -133,6 +134,8 @@
             Bundle 'Shougo/neocomplcache'
             Bundle 'Shougo/neosnippet'
             Bundle 'honza/vim-snippets'
+        elseif count(g:spf13_bundle_groups, 'YouCompleteMe')
+            Bundle 'Valloric/YouCompleteMe'
         endif
 
     " PHP
