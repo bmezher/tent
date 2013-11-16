@@ -592,7 +592,9 @@
 
     " YouCompleteMe {
         if count(g:spf13_bundle_groups, 'YouCompleteMe')
-            let g:ycm_global_ycm_extra_conf = '$BORIS_TENT/config/ycm_default_conf.py'
+            let g:ycm_global_ycm_extra_conf = $BORIS_TENT .'/config/ycm_default_conf.py'
+            " disable it on startup
+            "let g:loaded_youcompleteme = 1
         endif
     " }
 
