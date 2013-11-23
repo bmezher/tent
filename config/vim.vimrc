@@ -593,8 +593,16 @@
     " YouCompleteMe {
         if count(g:spf13_bundle_groups, 'YouCompleteMe')
             let g:ycm_global_ycm_extra_conf = $BORIS_TENT .'/config/ycm_default_conf.py'
+            " convenience mappings
+            nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
             " disable it on startup
-            "let g:loaded_youcompleteme = 1
+            let g:loaded_youcompleteme = 1
+            function EnableYCM()
+                unlet g:loaded_youcompleteme
+                so ~/.vim/bundle/YouCompleteMe/plugin/youcompleteme.vim
+                call youcompleteme#Enable()
+            endfunction
+            nmap <leader>ycm :call EnableYCM()<CR>
         endif
     " }
 
