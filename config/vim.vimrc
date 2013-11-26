@@ -594,6 +594,22 @@
         if count(g:spf13_bundle_groups, 'YouCompleteMe')
             let g:ycm_global_ycm_extra_conf = $BORIS_TENT .'/config/ycm_default_conf.py'
             " convenience mappings
+            function TagOrYCM()
+                try
+                    exe "tag ".expand("<cword>")
+                    let succeeded=1
+                catch
+                    if exists(":YcmCompleter")
+                        YcmCompleter GoToDefinitionElseDeclaration
+                        let succeeded=1
+                    endif
+                finally
+                    if !exists('succeeded')
+                        echo "Failed to find tag ".expand("<cword>").": ".errmsg
+                    endif
+                endtry
+            endfunction
+            nnoremap <C-]> :call TagOrYCM()<CR>
             nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
             " disable it on startup
             let g:loaded_youcompleteme = 1
