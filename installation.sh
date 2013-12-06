@@ -16,6 +16,7 @@
 #          git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 #          ln -s ~/.tent/config/vim.vimrc ~/.vimrc
 #          vim +BundleInstall +qall
-
+#  6. Set up gdb:
+#      ln -s $TENT/config/gdb.config  ~/.gdbinit
 # check this out
 # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html

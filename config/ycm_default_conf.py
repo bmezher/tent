@@ -35,34 +35,15 @@ import ycm_core
 # compilation database set (by default, one is not set).
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
 flags = [
-'-Wall',
-'-Wextra',
-'-Werror',
-#'-Wc++98-compat',
-'-Wno-long-long',
-'-Wno-variadic-macros',
-'-fexceptions',
-'-DNDEBUG',
-# THIS IS IMPORTANT! Without a "-std=<something>" flag, clang won't know which
-# language to use when compiling headers. So it will guess. Badly. So C++
-# headers will be compiled as C headers. You don't want that so ALWAYS specify
-# a "-std=<something>".
-# For a C project, you would set this to something like 'c99' instead of
-# 'c++11'.
-'-std=c++11',
-'-stdlib=libc++',
-# ...and the same thing goes for the magic -x option which specifies the
-# language that the files to be compiled are written in. This is mostly
-# relevant for c++ headers.
-# For a C project, you would set this to 'c' instead of 'c++'.
-'-x',
-'c++',
-'-isystem',
-# This path will only work on OS X, but extra paths that don't exist are not
-# harmful
-'/System/Library/Frameworks/Python.framework/Headers',
-'-I',
-'.',
+    '-Wall',
+    '-Wextra',
+    '-Werror',
+    '-std=c++11',
+    '-stdlib=libc++',
+    '-x',
+    'c++',
+    '-I', '.',
+    '-isystem', '/usr/lib/c++/v1'
 ]
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
@@ -78,6 +59,9 @@ if compilation_database_folder:
 else:
   database = None
 
+
+def DirectoryOfThisFile(filename):
+  return os.path.dirname( os.path.abspath( filename ) )
 
 def DirectoryOfThisScript():
   return os.path.dirname( os.path.abspath( __file__ ) )
@@ -122,7 +106,7 @@ def FlagsForFile( filename, **kwargs ):
       compilation_info.compiler_working_dir_ )
 
   else:
-    relative_to = DirectoryOfThisScript()
+    relative_to = DirectoryOfThisFile(filename)
     final_flags = MakeRelativePathsInFlagsAbsolute( flags, relative_to )
 
   return {
