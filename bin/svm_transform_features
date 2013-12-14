@@ -1,0 +1,149 @@
+#!/usr/bin/env ruby
+################################################################################
+# This is a simple Ruby script to effect arbitrary feature transformations in  #
+# an avm-lite formatted file. For any feature code that matches the criterion, #
+# it evaluates the specified transformation and sets the feature value to its  #
+# result. Transformations can be any valid Ruby code; it has access to the     #
+# current feature via f[x], or any other feature value (in the current row)    #
+# via f["123"] or f["string_feature_name"]                                     #
+#                                                                              #
+# In order to use human-readable feature names, a json file with the mappings  #
+# has to be passed via the -f parameter. The file has to contain an dictionary #
+# of arrays "feature_hash" => ["feature name",...], where there could be mul-  #
+# tiple names corresponding to the same hash value.                            #
+#                                                                              #
+# The transform file is a whitespace-separated list of "feature transform"     #
+# * Feature is the feature identifier: either the numeric hash code, a string  #
+# name, or (if starting and ending with "/") a regular expression. If multiple #
+# transforms match the same feature, only the first one will be used.          #
+# * Transform is any valid Ruby code. If it evaluates to 0, nil or empty, the  #
+# feature will be deleted. Current feature name (if accessed by name) or hash  #
+# code is available in the 'x' variable. All features (for the current line)   #
+# are accessible via the 'f' hash map. For example, current feature value is   #
+# 'f[x]', and "/.*/ 1+log(f[x])" will replace every feature value with log of  #
+# the value plus one. If, in addition, a line "1 f[x]*2" is present, feature   #
+# with code 1 will be doubled instead.                                         #
+################################################################################
+require 'optparse'
+require 'json'
+include Math
+# PARSE COMMAND LINE OPTIONS
+#
+options = {}
+optparse = OptionParser.new do | opts |  
+    opts.banner = "Usage: #{File.basename($0)} [-f features] transform_file [input file 1] [input file 2] ..."
+    opts.on_tail("-h", "--help", "Help. Display this screen.") do
+        puts opts
+        exit 1
+    end
+    opts.on("-f", "--features FEATURES", "JSON file with feature names.") do | f |
+        options[:features] = f
+    end
+    opts.on("-v", "--verbose", "Print verbose information.") do
+        options[:verbose] = true
+    end
+end
+
+begin
+    optparse.parse!
+rescue OptionParser::InvalidOption => e
+    puts e
+    puts optparse
+    exit 1
+end
+
+transform_file = ARGV.shift
+if transform_file.nil? or transform_file.empty?
+    puts "Missing transform_file"
+    puts optparse
+    exit 1
+end
+
+hash_to_name = {}
+feature_hash = {}
+if options.has_key? :features
+    fh = JSON.parse( IO.read(options[:features]) )
+    fh.each do |feature_value,feature_names|
+        feature_names.each do |name|
+            feature_hash[name] = feature_value
+        end
+    end
+end
+$stderr.puts feature_hash if options[:verbose]
+
+literal = {}
+regexp = {} # assume insertion order
+$stderr.puts "Transforms: #{transform_file}" if options[:verbose]
+File.foreach(transform_file) do |line|
+    feature,transform = line.strip().split()
+    transform = "" if transform.nil?
+    if feature.start_with? "/"
+        # regexp
+        r = Regexp.new(feature[1..-2])
+        # if we have feature hashes, match them now
+        feature_hash.each do |name,code|
+            if not literal.has_key?(code) and r.match(name)
+                literal[code] = transform
+                hash_to_name[code] = name
+            end
+        end
+        regexp[r] = transform
+    else
+        if feature_hash.has_key? feature
+            code = feature_hash[feature]
+            hash_to_name[code] = feature
+        else
+            code = feature
+        end
+        literal[code] = transform
+    end
+end
+$stderr.puts literal if options[:verbose]
+$stderr.puts regexp if options[:verbose]
+
+ARGF.each do |line|
+    data,comment = line.split("#",2)
+    entries = data.strip().split()
+    result = entries.shift
+    f = Hash.new do |h,k|
+        # can't find the key; perhaps can find the hashed value?
+        h[feature_hash[k]] if feature_hash.has_key? k
+    end
+    entries.each do |x|
+        feature,value = x.split(":")
+        f[feature] = (value.nil? ? 1.0 : value.to_f)
+    end
+    # transform
+    f.each do |feature,value|
+        # record the name of this feature; can be used by transforms as in "f[x]*2"
+        x = hash_to_name[feature] || feature
+        transform = literal[feature]
+        if transform.nil?
+            regexp.each do |k,t|
+                if k.match(feature)
+                    transform = t
+                    break
+                end
+            end
+        end
+        #puts "feature: #{feature}, transform=#{transform}"
+        if not transform.nil?
+            begin
+                value = eval(transform)
+            rescue Exception => e
+                $stderr.puts "Failed to apply transform '#{transform}' to feature '#{feature}' ('#{x}') when processing #{line}"
+                raise e
+            end
+        end
+        if not value.nil?
+            result = "#{result} #{feature}:#{value}"
+        end
+    end
+    if not comment.empty?
+        result = "#{result} \##{comment}"
+    end
+    puts result
+end
+
+exit 0
+
