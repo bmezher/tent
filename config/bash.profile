@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# force 256 colors
+if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
+    export TERM=xterm-256color
+fi
+
 # Change the window title of X terminals
 case ${TERM} in
         xterm*|rxvt*|Eterm|aterm|kterm|gnome*|interix)
