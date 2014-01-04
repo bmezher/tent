@@ -464,7 +464,7 @@
         nnoremap <silent> <leader>gg :GitGutterToggle<CR>
     "}
 
-    " nzaeocomplcache {
+    " neocomplcache {
         if count(g:spf13_bundle_groups, 'neocomplcache')
             let g:acp_enableAtStartup = 0
             let g:neocomplcache_enable_at_startup = 1
