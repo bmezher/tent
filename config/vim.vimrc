@@ -276,6 +276,12 @@
     map [H g0
     imap [H g0
 
+    " Word-based navigation from shell
+    map f w
+    map b b
+    imap f w
+    imap b b
+
     " For when you forget to sudo.. Really Write the file.
     cmap w!! w !sudo tee % >/dev/null
 
