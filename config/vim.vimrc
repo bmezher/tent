@@ -170,7 +170,7 @@
     set pastetoggle=<F10>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp set tabstop=2|set shiftwidth=2|set softtabstop=2
+    autocmd FileType c,cpp set tabstop=3|set shiftwidth=3|set softtabstop=3
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
@@ -457,6 +457,16 @@
         if !has('python')
             let g:pymode = 1
         endif
+    " }
+
+    " Syntastic {
+        let g:syntastic_python_checkers=['python','flake8']
+        " E501: long lines
+        " E231: spaces after commas
+        " E226: spaces around arithmetic operators
+        " E265: block comments start with '# '
+        "
+        let g:syntastic_python_flake8_args='--ignore=E501,E231,E226'
     " }
 
     " Fugitive {
